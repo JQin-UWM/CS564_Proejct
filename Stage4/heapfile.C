@@ -159,6 +159,8 @@ const Status HeapFile::getRecord(const RID &rid, Record &rec) {
             if (status != OK) {
                 return status;
             }
+        } else {
+            return BADPAGENO;
         }
 
         // Read the target page into the buffer pool
@@ -265,6 +267,28 @@ const Status HeapFileScan::scanNext(RID &outRid) {
     Status status;
     RID nextRid;
     Record rec;
+
+    // Check if curPage is NULL, and if so, load the first page of the file
+    if (curPage == NULL) {
+        if (headerPage == NULL) {
+            return BADPAGENO; // Error: header page is not loaded
+        }
+
+        // Start with the first page in the file
+        curPageNo = headerPage->firstPage;
+        if (curPageNo == -1) {
+            return FILEEOF; // No pages in the file
+        }
+
+        // Load the first page into the buffer pool
+        status = bufMgr->readPage(filePtr, curPageNo, curPage);
+        if (status != OK) {
+            return status;
+        }
+
+        curDirtyFlag = false;
+        curRec = NULLRID;
+    }
 
     while (true) {
         // Retrieve the next record on the current page
