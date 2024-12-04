@@ -17,19 +17,19 @@ const Status createHeapFile(const string fileName)
     {
 		// file doesn't exist. First create it and allocate
 		// an empty header page and data page.
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     return (FILEEXISTS);
 }
@@ -51,17 +51,17 @@ HeapFile::HeapFile(const string & fileName, Status& returnStatus)
     // open the file and read in the header page and the first data page
     if ((status = db.openFile(fileName, filePtr)) == OK)
     {
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
     }
     else
     {
@@ -77,7 +77,7 @@ HeapFile::~HeapFile()
     Status status;
     cout << "invoking heapfile destructor on file " << headerPage->fileName << endl;
 
-    // see if there is a pinned data page. If so, unpin it 
+    // see if there is a pinned data page. If so, unpin it
     if (curPage != NULL)
     {
     	status = bufMgr->unPinPage(filePtr, curPageNo, curDirtyFlag);
@@ -86,11 +86,11 @@ HeapFile::~HeapFile()
 		curDirtyFlag = false;
 		if (status != OK) cerr << "error in unpin of date page\n";
     }
-	
+
 	 // unpin the header page
     status = bufMgr->unPinPage(filePtr, headerPageNo, hdrDirtyFlag);
     if (status != OK) cerr << "error in unpin of header page\n";
-	
+
 	// status = bufMgr->flushFile(filePtr);  // make sure all pages of the file are flushed to disk
 	// if (status != OK) cerr << "error in flushFile call\n";
 	// before close the file
@@ -120,13 +120,13 @@ const Status HeapFile::getRecord(const RID & rid, Record & rec)
     Status status;
 
     // cout<< "getRecord. record (" << rid.pageNo << "." << rid.slotNo << ")" << endl;
-   
-   
-   
-   
-   
-   
-   
+
+
+
+
+
+
+
 }
 
 HeapFileScan::HeapFileScan(const string & name,
@@ -137,7 +137,7 @@ HeapFileScan::HeapFileScan(const string & name,
 
 const Status HeapFileScan::startScan(const int offset_,
 				     const int length_,
-				     const Datatype type_, 
+				     const Datatype type_,
 				     const char* filter_,
 				     const Operator op_)
 {
@@ -145,7 +145,7 @@ const Status HeapFileScan::startScan(const int offset_,
         filter = NULL;
         return OK;
     }
-    
+
     if ((offset_ < 0 || length_ < 1) ||
         (type_ != STRING && type_ != INTEGER && type_ != FLOAT) ||
         (type_ == INTEGER && length_ != sizeof(int)
@@ -196,7 +196,7 @@ const Status HeapFileScan::markScan()
 const Status HeapFileScan::resetScan()
 {
     Status status;
-    if (markedPageNo != curPageNo) 
+    if (markedPageNo != curPageNo)
     {
 		if (curPage != NULL)
 		{
@@ -224,28 +224,28 @@ const Status HeapFileScan::scanNext(RID& outRid)
     int 	nextPageNo;
     Record      rec;
 
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 }
 
 
 // returns pointer to the current record.  page is left pinned
-// and the scan logic is required to unpin the page 
+// and the scan logic is required to unpin the page
 
 const Status HeapFileScan::getRecord(Record & rec)
 {
     return curPage->getRecord(curRec, rec);
 }
 
-// delete record from file. 
+// delete record from file.
 const Status HeapFileScan::deleteRecord()
 {
     Status status;
@@ -256,7 +256,7 @@ const Status HeapFileScan::deleteRecord()
 
     // reduce count of number of records in the file
     headerPage->recCnt--;
-    hdrDirtyFlag = true; 
+    hdrDirtyFlag = true;
     return status;
 }
 
@@ -357,18 +357,18 @@ const Status InsertFileScan::insertRecord(const Record & rec, RID& outRid)
         return INVALIDRECLEN;
     }
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
